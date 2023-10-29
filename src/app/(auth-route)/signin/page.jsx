@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import SocialAuth from "@/components/SocialAuth";
 import Seperator from "@/components/ui/Seperator";
+import Link from "next/link";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -16,12 +17,6 @@ const LoginForm = () => {
       </div>
 
       <div className="form w-full px-6 py-6 rounded-md border shadow-sm">
-        <div className="py-4">
-          <SocialAuth />
-        </div>
-
-        <Seperator />
-
         <form className="w-full flex flex-col gap-3">
           <div className="input flex flex-col gap-1">
             <label className="text-md text-[#333]" htmlFor="Email">
@@ -52,11 +47,26 @@ const LoginForm = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full mt-2 rounded-md p-2 bg-[--primary-color] text-white"
+            className="w-full mt-2 mb-2 rounded-md p-2 bg-[--primary-color] text-white"
           >
             {loading ? "logining..." : "Login"}
           </button>
         </form>
+
+        <Seperator />
+
+        <div className="social-auth py-4">
+          <SocialAuth />
+        </div>
+
+        <div className="register-form-link w-full text-center">
+          <Link href={"/signup"}>
+            <span className="text-sm">
+              Dont have account,{" "}
+              <span className="font-medium text-[--primary-color] hover:underline">SignUp</span>
+            </span>
+          </Link>
+        </div>
       </div>
     </div>
   );

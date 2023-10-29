@@ -2,7 +2,7 @@ import React from 'react'
 
 const Seperator = () => {
   return (
-    <div className='w-full border-t py-2'></div>
+    <div className='w-full border-t my-2'></div>
   )
 }
 
