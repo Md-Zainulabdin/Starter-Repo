@@ -7,6 +7,12 @@ import Link from "next/link";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="w-full md:w-[380px] flex flex-col gap-6">
@@ -25,6 +31,9 @@ const LoginForm = () => {
             <input
               type="email"
               name="email"
+              autoComplete="off"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Enter your email.."
               className="border w-full px-3 py-2 rounded-md"
@@ -39,6 +48,9 @@ const LoginForm = () => {
               type="password"
               name="password"
               required
+              value={password}
+              autoComplete="off"
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password.."
               className="border w-full px-3 py-2 rounded-md"
             />
@@ -47,7 +59,11 @@ const LoginForm = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full mt-2 mb-2 rounded-md p-2 bg-[--primary-color] text-white"
+            className={`w-full mt-2 mb-2 rounded-md p-2  text-white ${
+              loading
+                ? "bg-indigo-400"
+                : "bg-[--primary-color] hover:bg-indigo-600"
+            }`}
           >
             {loading ? "logining..." : "Login"}
           </button>
@@ -63,7 +79,9 @@ const LoginForm = () => {
           <Link href={"/signup"}>
             <span className="text-sm">
               Dont have account,{" "}
-              <span className="font-medium text-[--primary-color] hover:underline">SignUp</span>
+              <span className="font-medium text-[--primary-color] hover:underline">
+                SignUp
+              </span>
             </span>
           </Link>
         </div>

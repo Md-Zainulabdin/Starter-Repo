@@ -6,6 +6,10 @@
   font-size: 15px;
 }
 
+input[type="radio"] {
+  accent-color: var(--primary-color);
+}
+
 :root {
   --primary-color: #4f52fa;
   --secondary-color: #222;

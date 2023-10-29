@@ -4,9 +4,15 @@ import React, { useState } from "react";
 import SocialAuth from "@/components/SocialAuth";
 import Seperator from "@/components/ui/Seperator";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const RegistrationForm = () => {
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userRole, setUserRole] = useState("");
+
   const role = [
     {
       id: 1,
@@ -18,8 +24,24 @@ const RegistrationForm = () => {
     },
   ];
 
+  const onRegister = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    if (!name || !password || !email || !userRole) {
+      toast.error("All feilds are required!");
+      return;
+    }
+
+    if (password?.length < 8) {
+      toast.error("Password should contain atleast 8 Character");
+      return;
+    }
+  };
+
   return (
-    <div className="w-full md:w-[380px] flex flex-col gap-6">
+    <div className="w-full sm:w-[380px] flex flex-col gap-6">
       <div className="title w-full text-center">
         <h1 className="text-3xl font-bold text-[--secondary-color]">
           Create a free Account
@@ -27,7 +49,7 @@ const RegistrationForm = () => {
       </div>
 
       <div className="form w-full px-6 py-6 rounded-md border shadow-sm">
-        <form className="w-full flex flex-col gap-3">
+        <form className="w-full flex flex-col gap-3" onSubmit={onRegister}>
           <div className="input flex flex-col gap-1">
             <label className="text-md text-[#333]" htmlFor="Name">
               Name <span className="text-red-500">*</span>
@@ -36,6 +58,9 @@ const RegistrationForm = () => {
               type="text"
               name="name"
               required
+              autoComplete="off"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name.."
               className="border w-full px-3 py-2 rounded-md"
             />
@@ -49,6 +74,9 @@ const RegistrationForm = () => {
               type="email"
               name="email"
               required
+              autoComplete="off"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email.."
               className="border w-full px-3 py-2 rounded-md"
             />
@@ -62,17 +90,25 @@ const RegistrationForm = () => {
               type="password"
               name="password"
               required
+              value={password}
+              autoComplete="off"
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password.."
               className="border w-full px-3 py-2 rounded-md"
             />
           </div>
 
-          <div className="input flex flex-col gap-1">
-
+          <div className="input flex flex-col gap-1 cursor-pointer">
             <div className="flex gap-3">
               {role.map((r) => (
-                <div className="flex gap-2">
-                  <input type="radio" name="role" value={r.label} />
+                <div className="flex gap-2 cursor-pointer" key={r.id}>
+                  <input
+                    type="radio"
+                    name="role"
+                    id={r.label}
+                    value={r.label}
+                    onChange={(e) => setUserRole(e.target.value)}
+                  />
                   <label htmlFor={r.label}>{r.label}</label>
                 </div>
               ))}
@@ -82,7 +118,9 @@ const RegistrationForm = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full mt-2 mb-2 rounded-md p-2 bg-[--primary-color] text-white"
+            className={`w-full mt-2 mb-2 rounded-md p-2  text-white ${
+              loading ? "bg-indigo-400" : "bg-[--primary-color] hover:bg-indigo-600"
+            }`}
           >
             {loading ? "Registiring..." : "Register"}
           </button>
