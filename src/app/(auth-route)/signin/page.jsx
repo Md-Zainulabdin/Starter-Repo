@@ -4,14 +4,41 @@ import React, { useState } from "react";
 import SocialAuth from "@/components/SocialAuth";
 import Seperator from "@/components/ui/Seperator";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onLogin = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("All feilds are required!");
+    }
+
+    try {
+      const login = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (login.ok && login.error === null) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setEmail("");
+      setPassword("");
+      setLoading(false);
+    }
   };
 
   return (
@@ -23,7 +50,7 @@ const LoginForm = () => {
       </div>
 
       <div className="form w-full px-6 py-6 rounded-md border shadow-sm">
-        <form className="w-full flex flex-col gap-3">
+        <form className="w-full flex flex-col gap-3" onSubmit={onLogin}>
           <div className="input flex flex-col gap-1">
             <label className="text-md text-[#333]" htmlFor="Email">
               Email Address <span className="text-red-500">*</span>

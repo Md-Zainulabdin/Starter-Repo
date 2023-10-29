@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/libs/prisma";
 import { hash } from "bcryptjs"
 
-export const registerUser = async (req, res) => {
+export const POST = async (req, res) => {
     try {
         const { name, email, password, role } = await req.json();
 
@@ -13,7 +13,7 @@ export const registerUser = async (req, res) => {
 
         const user = await prisma.user.findUnique({
             where: {
-                email
+                email,
             }
         });
 

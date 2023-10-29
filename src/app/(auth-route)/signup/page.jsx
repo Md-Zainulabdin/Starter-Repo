@@ -1,12 +1,16 @@
 "use client";
+import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import Link from "next/link";
 
 import SocialAuth from "@/components/SocialAuth";
 import Seperator from "@/components/ui/Seperator";
-import Link from "next/link";
-import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const RegistrationForm = () => {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -37,6 +41,27 @@ const RegistrationForm = () => {
     if (password?.length < 8) {
       toast.error("Password should contain atleast 8 Character");
       return;
+    }
+    try {
+      const { statusText } = await axios.post("/api/user", {
+        name,
+        password,
+        email,
+        role: userRole,
+      });
+
+      console.log("res", statusText);
+
+      router.push("/signin");
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error.response.data);
+    } finally {
+      setName("");
+      setPassword("");
+      setUserRole("");
+      setEmail("");
+      setLoading(false);
     }
   };
 
@@ -119,7 +144,9 @@ const RegistrationForm = () => {
             disabled={loading}
             type="submit"
             className={`w-full mt-2 mb-2 rounded-md p-2  text-white ${
-              loading ? "bg-indigo-400" : "bg-[--primary-color] hover:bg-indigo-600"
+              loading
+                ? "bg-indigo-400"
+                : "bg-[--primary-color] hover:bg-indigo-600"
             }`}
           >
             {loading ? "Registiring..." : "Register"}
