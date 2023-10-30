@@ -3,7 +3,6 @@ import './globals.css'
 
 import ToastProvider from '@/providers/toast-provider'
 import AuthProvider from '@/providers/auth-provider'
-import Navbar from '@/components/Navbar'
 
 const poppin = Poppins({
   weight: ["100", "200", "400", "500", "600", "700"],
@@ -21,10 +20,7 @@ export default function RootLayout({ children }) {
       <body className={poppin.className}>
         <AuthProvider>
           <ToastProvider />
-          <Navbar />
-          <div className='mt-[70px] px-[20px] md:px-[50px]'>
-            {children}
-          </div>
+          {children}
         </AuthProvider>
       </body>
     </html>
